@@ -1,0 +1,233 @@
+body {
+    margin: auto;
+    overflow: hidden;
+    background: linear-gradient(to right, #563D82, #9E708B);
+    font-family: 'Arial', sans-serif;
+}
+
+.left-side {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 80px;
+    position: relative;
+    overflow: hidden;
+}
+
+.left-side h1.main-heading {
+    font-size: 100px;
+    text-align: center;
+    color: #D6D2C4;
+    margin-bottom: 50px;
+    font-family: 'Pacifico', cursive;
+}
+
+.left-side .description {
+    font-style: oblique;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: justify;
+    line-height: 1.6;
+    color:  rgba(0, 0, 0, 0.493);
+    margin-bottom: 80px;
+}
+
+.right-side {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.login-container {
+    text-align: center;
+    width: 80%;
+    max-width: 400px;
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.171); 
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    color: #D6D2C4;  
+    position: relative;
+    margin-top: 50px; 
+    animation: floatContainer 4s infinite ease-in-out alternate;
+}
+
+@keyframes floatContainer {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-20px);
+    }
+}
+
+
+form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #25241e;
+}
+
+form input {
+    max-width: 250px;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    background-color: #fff;
+    color: #252A36;
+}
+
+form button {
+    width: 50%;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #563D82;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #9E708B;
+}
+
+p {
+    margin-top: 20px;
+    color: #25241e;
+}
+
+a {
+    text-decoration: none;
+    color: #563D82;
+}
+
+h2 {
+    color: #D6D2C4;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+body {
+    font-family: 'Comic Sans MS', sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.left-side {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+    margin-left: 50px;
+}
+
+.main-heading {
+    font-size: 3.5em;
+    color: #160466;
+    animation: bounceInLeft 1s ease forwards;
+}
+
+.description {
+    font-size: 1.2em;
+    color: #666;
+    animation: fadeInLeft 1s ease forwards;
+}
+
+.right-side {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+}
+
+.login-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    animation: bounceInRight 1s ease forwards;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #ff5733;
+}
+
+button[type="submit"] {
+    background-color: #ff5733;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #160466;
+}
+
+a {
+    color: #ff5733;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #140558;
+}
+
+@keyframes bounceInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes bounceInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

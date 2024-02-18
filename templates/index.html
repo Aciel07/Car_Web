@@ -1,0 +1,50 @@
+<!-- 
+    Index 
+    - This is the main page of the website
+    - It contains a brief description of the website and the login form
+    - The login form is used to authenticate the user
+    - If the user does not have an account, they can click on the "Sign up" link to create an account
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INDEX PAGE</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="left-side">
+            <div>
+                <h1 class="main-heading">NomadRides</h1>
+                <p class="description">
+                    "Where every journey begins with convenience and ends with adventure.
+                    Unlock the freedom to explore, embrace the unexpected, and redefine 
+                    your travel experience"
+                </p>
+            </div>
+        </div>
+        <div class="right-side">
+            <div class="login-container">
+                <form method="post" action="{{ url_for('login') }}">
+                    <center>
+                        <h1 class="main-heading">LOGIN</h1>
+                        <h2 class="description">Welcome to NomadRides</h2>
+                        <label>
+                            <b>Username</b> <br> <input type="text" id="username" name="username" required> <br>
+                            <b>Password</b> <br> <input type="password" id="password" name="password" required> <br>
+                        </label>
+                        <button type="submit">Hop In!</button>
+                        <b><p>Don't have an account? <a href="{{ url_for('sign_up') }}">Join the Ride!</a></p><b></b>
+                    </center>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

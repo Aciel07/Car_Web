@@ -1,0 +1,322 @@
+<!-- 
+    Rent Car.html
+    - The Rent a Car page will allow the user to rent a car from the platform.
+    - The user can select a car from the list of available cars and specify the rental duration.
+    - The user can choose to rent the car on an hourly or daily basis.
+    - The user can calculate the total amount to be paid based on the rental duration and the car's rental rate.
+    - The user can proceed to the payment page to complete the rental transaction.
+    - The user can pay for the rental using a credit card.
+    - The user will receive a payment summary after completing the payment.
+    - The user can return to the main menu after completing the payment.
+ -->
+ <!DOCTYPE html>
+ <html lang="en">
+ 
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Rent Car</title>
+     <link rel="stylesheet" href="{{ url_for('static', filename='rent_car.css') }}">
+ </head>
+ 
+ <body>
+     <div class="container">
+ 
+         <div class="left-side">
+             <div id="rent-container">
+                 <h1 class="main-heading">NomadRides Car Rental</h1>
+                 <div class="table-container">
+                     <table>
+                         <tr>
+                             <th>Car ID</th> <th>Car Name</th> <th>Car Type</th>
+                             <th>Car Brand</th> <th>Transmission</th> <th>Color</th>
+                             <th>Hourly Rate</th> <th>Daily Rate</th> <th>Availability</th>
+                         </tr>
+                         {% for car in cars %}
+                         <tr>
+                             <td>{{ car.car_id }}</td> <td>{{ car.car_name }}</td> <td>{{ car.car_type }}</td>
+                             <td>{{ car.car_brand }}</td> <td>{{ car.transmission }}</td> <td>{{ car.color }}</td>
+                             <td>{{ car.hourly_rate }}</td> <td>{{ car.daily_rate }}</td> <td>{{ car.availability }}</td>
+                         </tr>
+                         {% endfor %}
+                     </table>
+                 </div>
+             </div>
+         </div>
+ 
+         <div class="right-side">
+ 
+             <div id="rent-form">
+                 <form method="post"   action="{{ url_for('rent_car')}}">
+                     <h1 class="main-heading">Rent a Car</h1>
+ 
+                     <label for="car_id">Car ID
+                         <select name="car_id" id="car_id" required>
+                             {% for car in cars %}
+                             <option value="{{ car.car_id }}" data-hourly-rate="{{ car.hourly_rate }}"
+                                 data-daily-rate="{{ car.daily_rate }}">{{ car.car_id }}</option>
+                             {% endfor %}
+                         </select>
+                     </label>
+ 
+                     <label for="rent_type">Rent Type
+                         <select name="rent_type" id="rent_type" required>
+                             <option value="none"></option>
+                             <option value="hourly">Hourly</option>
+                             <option value="daily">Daily</option>
+                         </select>
+                     </label>
+ 
+                     <label for="rent_duration">Rental Duration
+                         <input type="text" name="rent_duration" id="rent_duration" readonly>
+                     </label>
+ 
+                     <div class="hourly-details">
+                         <label for="pickup_date_time_hourly">Pickup Date and Time
+                             <input type="datetime-local" name="pickup_date_time_hourly" id="pickup_date_time_hourly" required>
+                         </label>
+ 
+                         <label for="return_date_time_hourly">Return Date and Time
+                             <input type="datetime-local" name="return_date_time_hourly" id="return_date_time_hourly" required>
+                         </label>
+                     </div>
+ 
+                     <div class="daily-details">
+                         <label for="pickup_date_daily">Pickup Date
+                             <input type="date" name="pickup_date_daily" id="pickup_date_daily" required>
+                         </label>
+ 
+                         <label for="return_date_daily">Return Date
+                             <input type="date" name="return_date_daily" id="return_date_daily" required>
+                         </label>
+                     </div>
+ 
+                     <label for="total_amount">Amount to be paid
+                         <input type="text" name="total_amount" id="total_amount" readonly>
+                     </label>
+ 
+                     <label for="rent_confirmation">Rent Confirmation
+                         <select name="rent_confirmation" id="rent_confirmation" required>
+                             <option value="N">No</option>
+                             <option value="Y">Yes</option>
+                         </select>
+                     </label>
+ 
+                     <button type="button" id="calculateBtn">Calculate</button>
+                     <button id="proceedBtn" type="button">Proceed to Payment</button>
+ 
+                 <div id="payment-container" class="translucent-padding">
+                     <h2>Payment</h2>
+                     <label for="card_owner">Card Owner</label>
+                     <input type="text" name="card_owner" id="card_owner" class="card-owner-input" required>
+                     <br>
+                     <label for="card_number">Card Number</label>
+                     <div class="card-number-container">
+                         <input type="text" name="card_number" id="card_number1" class="card-number-input" maxlength="4" required>
+                         <input type="text" name="card_number" id="card_number2" class="card-number-input" maxlength="4" required>
+                         <input type="text" name="card_number" id="card_number3" class="card-number-input" maxlength="4" required>
+                         <input type="text" name="card_number" id="card_number4" class="card-number-input" maxlength="4" required>
+                     </div>
+                 
+                     <div class="expires-container">
+                        <label for="expiry_date">
+                            Valid Until <input type="text" name="expiry_date" id="expiry_date" maxlength="6" required>
+                        </label>
+                        <label for="cvv">
+                            CVV <input type="text" name="cvv" id="cvv" maxlength="3" required>
+                        </label>
+                    </div>
+                    
+                     <button id="payNowBtn" type="button">Pay Now</button>
+                 </div>
+                 <div id="payment-summary-popup">
+                     <div class="popup-content">
+                         <h2>Payment Summary</h2>
+                         <p id="payment-summary-text"></p>
+                         <small class="note">Note: Please take a screenshot of this summary for your reference.</small>
+                         <button id="backToMainMenuBtn" onclick="location.href='{{ url_for('main_menu') }}'">Back to Main Menu</button>
+                     </div>
+                 </div>
+             </form>
+             </div>
+             
+         </div>
+     </div>
+ </body>
+ <script>
+     document.addEventListener("DOMContentLoaded", function () {
+         // Rent Form
+         const rentTypeSelect = document.getElementById('rent_type');
+         const hourlyDetails = document.querySelector('.hourly-details');
+         const dailyDetails = document.querySelector('.daily-details');
+         const rentDurationSpan = document.getElementById('rent_duration');
+         const calculateBtn = document.getElementById('calculateBtn');
+         const proceedBtn = document.getElementById('proceedBtn');
+         const rentConfirmationSelect = document.getElementById('rent_confirmation');
+         const hourlyRateInput = document.getElementById('hourly_rate');
+         const dailyRateInput = document.getElementById('daily_rate');
+ 
+         // Payment Form
+         const cardNumber1 = document.getElementById('card_number1');
+         const cardNumber2 = document.getElementById('card_number2');
+         const cardNumber3 = document.getElementById('card_number3');
+         const cardNumber4 = document.getElementById('card_number4');
+         const expiryDateInput = document.getElementById('expiry_date');
+         const cvvInput = document.getElementById('cvv');
+         const totalAmountInput = document.getElementById('total_amount');
+         const paymentContainer = document.getElementById('payment-container');
+         const paymentDetails = document.getElementById('payment-details');
+         const paymentSummary = document.getElementById('payment-summary');
+         const payNowBtn = document.getElementById('payNowBtn');
+ 
+         rentTypeSelect.addEventListener("change", function () {
+             if (rentTypeSelect.value === 'hourly') {
+                 hourlyDetails.style.display = 'block';
+                 dailyDetails.style.display = 'none';
+             } else if (rentTypeSelect.value === 'daily') {
+                 hourlyDetails.style.display = 'none';
+                 dailyDetails.style.display = 'block';
+             }
+         });
+ 
+         const formatAmount = (amount) => {
+             const formattedAmount = new Intl.NumberFormat('en-PH', {
+                 style: 'currency',
+                 currency: 'PHP',
+                 minimumFractionDigits: 2,
+                 maximumFractionDigits: 2,
+             }).format(amount);
+ 
+             return formattedAmount;
+         };
+ 
+         const calculateTotalAmount = () => {
+             const carSelect = document.getElementById('car_id');
+             const selectedOption = carSelect.options[carSelect.selectedIndex];
+             const hourlyRate = parseFloat(selectedOption.getAttribute('data-hourly-rate'));
+             const dailyRate = parseFloat(selectedOption.getAttribute('data-daily-rate'));
+             const rentType = rentTypeSelect.value;
+ 
+             if (rentType === "hourly") {
+                 const pickupDateTime = new Date(document.getElementById('pickup_date_time_hourly').value);
+                 const returnDateTime = new Date(document.getElementById('return_date_time_hourly').value);
+                 const hoursDiff = Math.abs(returnDateTime - pickupDateTime) / 36e5;
+                 rentDurationSpan.value = hoursDiff + " Hours";
+                 totalAmountInput.value = (hourlyRate * hoursDiff).toFixed(2);
+             } else if (rentType === "daily") {
+                 const pickupDate = new Date(document.getElementById('pickup_date_daily').value);
+                 const returnDate = new Date(document.getElementById('return_date_daily').value);
+                 const daysDiff = Math.ceil((returnDate - pickupDate) / (1000 * 60 * 60 * 24));
+                 rentDurationSpan.value = daysDiff;  // Set to the numeric value
+                 totalAmountInput.value = (dailyRate * daysDiff).toFixed(2);
+             }
+ 
+             // Remove currency symbol and commas before converting to float
+             const formattedAmount = totalAmountInput.value.replace(/[^\d.]/g, '');
+             totalAmountInput.value = formatAmount(formattedAmount);
+ 
+             if (rentConfirmationSelect.value === 'Y') {
+                 proceedBtn.style.display = 'block';
+             } else {
+                 proceedBtn.style.display = 'none';
+             }
+         };
+ 
+         rentTypeSelect.addEventListener("change", calculateTotalAmount);
+         calculateBtn.addEventListener("click", calculateTotalAmount);
+ 
+         calculateTotalAmount();
+ 
+         proceedBtn.addEventListener('click', function () {
+             paymentContainer.style.display = 'block';
+             paymentDetails.style.display = 'none';
+         });
+ 
+         payNowBtn.addEventListener('click', function () {
+             // Format card number
+             const formatCardNumber = (input, nextInput) => {
+                 input.value = input.value.replace(/\D/g, '');
+ 
+                 if (input.value.length === input.maxLength && nextInput) {
+                     nextInput.focus();
+                 }
+             };
+ 
+             formatCardNumber(cardNumber1, cardNumber2);
+             formatCardNumber(cardNumber2, cardNumber3);
+             formatCardNumber(cardNumber3, cardNumber4);
+ 
+             // Format expiry date as user types
+             expiryDateInput.value = expiryDateInput.value.replace(/\D/g, ''); // Remove non-numeric characters
+             expiryDateInput.value = expiryDateInput.value.replace(/(\d{2})(\d{0,4})/, '$1/$2').trim();
+ 
+             // Format CVV
+             cvvInput.value = cvvInput.value.replace(/\D/g, '');
+ 
+             // Validate payment form
+             const validateCardNumber = (input) => /^\d{16}$/.test(input);
+             const validateExpiryDate = (input) => /^(0[1-9]|1[0-2])\/\d{4}$/.test(input);
+             const validateCVV = (input) => /^\d{3}$/.test(input);
+ 
+             const cardNumber = cardNumber1.value + cardNumber2.value + cardNumber3.value + cardNumber4.value;
+             const expiryDate = expiryDateInput.value;
+             const cvv = cvvInput.value;
+ 
+             if (!validateCardNumber(cardNumber)) {
+                 alert('Invalid card number. Please enter a valid 16-digit card number.');
+                 return;
+             }
+ 
+             if (!validateExpiryDate(expiryDate)) {
+                 alert('Invalid expiry date. Please enter a valid date in MM/YYYY format.');
+                 return;
+             }
+ 
+             if (!validateCVV(cvv)) {
+                 alert('Invalid CVV. Please enter a valid 3-digit CVV.');
+                 return;
+             }
+ 
+             // Display payment summary popup
+             const carSelect = document.getElementById('car_id');
+             const selectedOption = carSelect.options[carSelect.selectedIndex];
+             const carId = selectedOption.value;
+             const hourlyRate = parseFloat(selectedOption.getAttribute('data-hourly-rate'));
+             const dailyRate = parseFloat(selectedOption.getAttribute('data-daily-rate'));
+             const rentType = document.getElementById('rent_type').value;
+ 
+             let pickupDateTime, returnDateTime;
+             let rentDuration;
+ 
+             if (rentType === "hourly") {
+                 pickupDateTime = document.getElementById('pickup_date_time_hourly').value;
+                 returnDateTime = document.getElementById('return_date_time_hourly').value;
+ 
+                 const hoursDiff = Math.abs(new Date(returnDateTime) - new Date(pickupDateTime)) / 36e5;
+                 rentDuration = hoursDiff + " Hours";
+             } else if (rentType === "daily") {
+                 pickupDateTime = document.getElementById('pickup_date_daily').value;
+                 returnDateTime = document.getElementById('return_date_daily').value;
+ 
+                 const daysDiff = Math.ceil((new Date(returnDateTime) - new Date(pickupDateTime)) / (1000 * 60 * 60 * 24));
+                 rentDuration = daysDiff + " Day(s)";
+             }
+ 
+             const totalAmount = rentType === "hourly" ? hourlyRate : dailyRate;
+ 
+             const formattedAmount = formatAmount(totalAmount);
+             const paymentSummaryText = `The total amount paid is ${formattedAmount}. 
+                 The car you rented has an ID of ${carId}.
+                 Date and time of pick up is ${pickupDateTime}
+                 while the return date and time are ${returnDateTime}.
+                 The Rental Duration is valid for ${rentDuration}`;
+ 
+             document.getElementById('payment-summary-text').textContent = paymentSummaryText;
+             document.getElementById('payment-summary-popup').style.display = 'block';
+         });
+     });
+ 
+ </script>
+ 
+ </html>
+ 

@@ -1,0 +1,89 @@
+<!-- 
+    Sign Up Page
+    - This page is designed to allow users to sign up for an account on the NomadRides platform.
+    - The form contains fields for personal information, contact information, and account information.
+    - The form is submitted to the server using the POST method.
+    - The form data is validated on the server side to ensure that the user's information is accurate and complete.
+    - Upon successful registration, the user is redirected to the login page.
+    - The form includes input fields includes a pattern attribute to enforce a specific format on such
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='sign_up.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="left-side">
+            <div>
+                <h1 class="main-heading">NomadRides</h1>
+                <p class="description">
+                    A platform designed to simplify and expedite the process of renting vehicles,
+                    catering specifically to individuals in times of emergencies, adventures, or any scenario where access to
+                    a vehicle is essential. This innovative program is crafted with the aim of providing a seamless
+                    and convenient solution to those who urgently require transportation.
+                </p>
+                <center>
+                    <h2> Why NomadRides?</h2>
+                </center>
+                <p class="description">
+                    NomadRides is not just a rental platform; it's a solution designed to address the urgent and varied transportation
+                    needs of individuals in different life scenarios. Whether it's an impromptu road trip, or supporting a lifestyle that values flexibility, NomadRides
+                    is there to provide a reliable and efficient transportation solution. With NomadRides, we aim to redefine the way
+                    people think about vehicle rentals, making it an accessible and stress-free experience that empowers individuals
+                    to navigate life's journeys with confidence and convenience.
+                </p>
+            </div>
+        </div>
+        <div class="right-side">
+            <div class="sign-up-container">
+                <h2>Need a ride? Hop on NomadRides</h2>
+                <form method="post" action="{{ url_for('sign_up') }}">
+                    <h3>Personal Information</h3>
+                    <div class="two-inputs">
+                        <label for="first_name">
+                            <input type="text" id="first_name" name="first_name" placeholder="First Name">
+                        </label>
+                        <label for="last_name">
+                            <input type="text" id="last_name" name="last_name" placeholder="Last Name" required>
+                        </label>
+                    </div>
+                    <label for="address">
+                        <input type="text" id="address" name="address" placeholder="Residential Address" required>
+                    </label>
+                    <h3>Contact Information</h3>
+                    <label for="contact_number" class="tooltip-container">
+                        <input type="tel" id="contact_number" name="contact_number" pattern="[0-9]{11}" placeholder="Contact Number" required>
+                        <span class="tooltip">Enter a valid 11-digit contact number</span>
+                    </label>
+                    <label for="email">
+                        <input type="email" id="email" name="email" placeholder="Email" required>
+                    </label>
+                    <h3>Account Information</h3>
+                    <label for="username">
+                        <input type="text" id="username" name="username" placeholder="Username" required>
+                    </label>
+                    <div class="two-inputs">
+                        <label for="password" class="tooltip-container">
+                            Password<input type="password" id="password" name="password" minlength="8" pattern="^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*()_+])[a-zA-Z\d!@#$%^&*()_+]{8,}$" required>
+                            <span class="tooltip">
+                                Minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, 1 symbol, and 1 digit
+                            </span>
+                        </label>
+                        <label for="confirm_password" class="tooltip-container">
+                            Confirm Password<input type="password" id="confirm_password" name="confirm_password" required>
+                        </label>
+                    </div>
+                    <button type="submit">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

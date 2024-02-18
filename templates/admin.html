@@ -1,0 +1,236 @@
+<!-- 
+    Admin Dashboard 
+    The Admin Dashboard in NomadRides provides a comprehensive interface for administrators to efficiently
+    oversee user activities and manage the car database. It enables administrators to view registered user. 
+    he dashboard also offers a list of cars available for rent, facilitating the addition and removal of cars 
+    through a user-friendly form and a straightforward button-click mechanism.
+--> 
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Welcome, {{ admin }}</h1>
+
+        <!-- Registered Users Table -->
+        <h2>Registered Users of NomadRides</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Residential Address</th>
+                    <th>Contact Number</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.first_name }}</td>
+                        <td>{{ user.last_name }}</td>
+                        <td>{{ user.residential_address }}</td>
+                        <td>{{ user.contact_number }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            <button onclick="removeUser('{{ user.username }}')">Remove</button> <!-- Call removeUser function -->
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Car Database Table -->
+        <h2>List of Cars</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Car ID</th>
+                    <th>Car Name</th>
+                    <th>Car Type</th>
+                    <th>Car Brand</th>
+                    <th>Transmission</th>
+                    <th>Color</th>
+                    <th>Hourly Rate</th>
+                    <th>Daily Rate</th>
+                    <th>Availability</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for car in cars %}
+                    <tr>
+                        <td>{{ car.car_id }}</td>
+                        <td>{{ car.car_name }}</td>
+                        <td>{{ car.car_type }}</td>
+                        <td>{{ car.car_brand }}</td>
+                        <td>{{ car.transmission }}</td>
+                        <td>{{ car.color }}</td>
+                        <td>{{ car.hourly_rate }}</td>
+                        <td>{{ car.daily_rate }}</td>
+                        <td>{{ car.availability }}</td>
+                        <td>
+                            <button onclick="removeCar({{ car.car_id }})">Remove</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button id="addCarFormButton" onclick="addCar()">Add Car</button>
+
+
+        <!-- Add Car Form -->
+        <form id="addCarForm" method="post" action="{{ url_for('add_car') }}">
+            <h2>Add Car</h2>
+            <!-- Car Name -->
+            <label for="carName">Car Name:</label>
+            <input type="text" id="carName" name="carName" required>
+
+            <!-- Car Type -->
+            <label for="carType">Car Type:</label>
+            <input type="text" id="carType" name="carType" required>
+
+            <!-- Car Brand -->
+            <label for="carBrand">Car Brand:</label>
+            <input type="text" id="carBrand" name="carBrand" required>
+
+            <!-- Transmission Type -->
+            <label for="transmission">Transmission:</label>
+            <select id="transmission" name="transmission" required>
+                <option value="Automatic">Automatic</option>
+                <option value="Manual">Manual</option>
+            </select>
+
+            <!-- Car Color -->
+            <label for="carColor">Color:</label>
+            <input type="text" id="carColor" name="carColor" required> <br>
+
+            <!-- Hourly Rate -->
+            <label for="hourlyRate">Hourly Rate:</label>
+            <input type="number" id="hourlyRate" name="hourlyRate" step="0.01" required>
+
+            <!-- Daily Rate -->
+            <label for="dailyRate">Daily Rate:</label>
+            <input type="number" id="dailyRate" name="dailyRate" step="0.01" required> <br>
+
+            <!-- Quantity -->
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" required>
+
+            <!-- Availability -->
+            <label for="availability">Availability:</label>
+            <select id="availability" name="availability" required>
+                <option value="1">Available</option>
+                <option value="0">Not Available</option>
+            </select>
+
+            <button type="submit">Add Car</button>
+        </form>
+
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</body>
+<script>
+    function removeUser(username) {
+        // Confirm deletion
+        var confirmDelete = confirm('Are you sure you want to remove user ' + username + '?');
+
+        if (confirmDelete) {
+            // Send a request to the server for removing the user
+            fetch("{{ url_for('remove_user') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username: username }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                // Reload the page or update the user list after successful deletion
+                location.reload();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById('addCarForm').style.display = 'none';
+    });
+    function addCar() {
+        document.getElementById('addCarForm').style.display = 'Block';
+        // Get form data
+        var formData = {
+            carName: document.getElementById('carName').value,
+            carType: document.getElementById('carType').value,
+            carBrand: document.getElementById('carBrand').value,
+            transmission: document.getElementById('transmission').value,
+            carColor: document.getElementById('carColor').value,
+            hourlyRate: document.getElementById('hourlyRate').value,
+            dailyRate: document.getElementById('dailyRate').value,
+            quantity: document.getElementById('quantity').value,
+            availability: document.getElementById('availability').value
+        };
+
+        // Send data to the server for adding a car
+        fetch("{{ url_for('add_car') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+
+    function removeCar(carId) {
+    // Confirm deletion
+    var confirmDelete = confirm('Are you sure you want to remove car ID ' + carId + '?');
+
+    if (confirmDelete) {
+        // Send a request to the server for removing the car
+        fetch("{{ url_for('remove_car', car_id=0) }}".replace('0', carId), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ carId: carId }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            // Reload the page or update the car list after successful deletion
+            location.reload();
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+}
+
+    function cancelEdit() {
+        // Hide the edit form
+        document.getElementById('editCarForm').style.display = 'none';
+    }
+
+</script>
+</html>

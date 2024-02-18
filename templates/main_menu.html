@@ -1,0 +1,171 @@
+<!--
+    Main Menu 
+    - Profile
+    - Rent a Car
+    - Logout
+    - This is the main menu page that will be displayed after the user logs in.
+    - The user can navigate to the Profile page, Rent a Car page, or Logout from the application.
+    - The Profile page will display the user's profile information.
+    - The Rent a Car page will allow the user to rent a car from the platform.
+    - The Logout option will log the user out of the application.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INDEX PAGE</title>
+    <style>
+        body {
+            margin: auto;
+            overflow: hidden;
+            background: linear-gradient(to right, #563D82, #9E708B);
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .left-side {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .left-side h1.main-heading {
+            font-size: 40px;
+            text-align: center;
+            color: #D6D2C4;
+            margin-bottom: 30px;
+            font-family: 'Pacifico', cursive;
+        }
+
+        .left-side .description {
+            font-size: 18px;
+            text-align: justify;
+            line-height: 1.6;
+            color: #D6D2C4;
+            margin-bottom: 30px;
+        }
+
+        .right-side {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .menu-container {
+            text-align: center;
+            width: 80%;
+            max-width: 400px;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.171); /* Translucent background color */
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            color: #D6D2C4;
+            position: relative;
+            margin-top: 50px; /* Adjust the top margin for floating effect */
+            animation: floatContainer 4s infinite ease-in-out alternate, fadeIn 2s ease-in-out;
+        }
+
+        @keyframes floatContainer {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        h2 {
+            text-align: center;
+            color: #D6D2C4; /* Match the color with main heading */
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 15px; /* Increased spacing between buttons */
+        }
+
+        a {
+            display: block;
+            padding: 15px;
+            background-color: #563D82;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #9E708B;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="left-side">
+            <div>
+                <h1 class="main-heading">NomadRides</h1>
+                <p class="description">
+                    A platform designed to simplify and expedite the process of renting vehicles, catering specifically to
+                    individuals in times of emergencies, adventures, or any scenario where access to a vehicle is essential.
+                    This innovative program is crafted with the aim of providing a seamless and convenient solution to those
+                    who urgently require transportation.
+                </p>
+                <center>
+                    <h2>Why NomadRides?</h2>
+                </center>
+                <p class="description">
+                    NomadRides is not just a rental platform; it's a solution designed to address the urgent and varied
+                    transportation needs of individuals in different life scenarios. Whether it's an impromptu road trip, or supporting a lifestyle
+                    that values flexibility, NomadRides is there to provide a reliable and efficient transportation solution.
+                    With NomadRides, we aim to redefine the way people think about vehicle rentals, making it an accessible
+                    and stress-free experience that empowers individuals to navigate life's journeys with confidence and
+                    convenience.
+                </p>
+            </div>
+        </div>
+        <div class="right-side">
+            <div class="menu-container">
+                <h2>MAIN MENU</h2>
+                <div id="menu">
+                    <ul>
+                        <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                        <li><a href="{{ url_for('rent_car') }}">Rent a Car</a></li>
+                        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

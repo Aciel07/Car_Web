@@ -1,0 +1,71 @@
+<!-- 
+    Profile Page 
+    - This page is designed to display the user's profile information.
+    - The user's profile information is retrieved from the server and displayed on the page.
+    - The user has the option to edit their profile information.
+    - The user can also delete their account from this page.
+    - The form for editing the profile information is initially hidden and is displayed when 
+    the user clicks the "Edit Profile" button.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="left-side">
+            <div class="profile-card">
+                {% if customer %}
+                    <h1>{{ customer.first_name }} {{ customer.last_name }}</h1>
+                    <h2>@{{ customer.username }}</h2>
+                    <label>Residential Address</label>
+                    <p>{{ customer.residential_address }}</p>
+                    <div class="Contact">
+                        <h3>Contact Information</h3>
+                        <label>Contact Number</label>
+                        <p>{{ customer.contact_number }}</p>
+                        <label>Email </label>
+                        <p>{{ customer.email }}</p>
+                    </div>
+                    <button class="editButton" id="editButton">Edit Profile</button>
+                    <form action="{{ url_for('delete_account') }}" method="post">
+                        <button type="submit" class="deletebtn" onclick="return confirm('Are you sure you want to delete your account?')">Delete Account</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+        <div class="right-side">
+            <div class="profile-card hidden" id="editFormContainer">
+                <h2>Edit Profile</h2>
+                <form id="editForm" action="{{ url_for('edit_profile') }}" method="post">
+                    <label for="new_username">Username:</label>
+                    <input type="text" id="new_username" name="new_username" value="{{ customer.username }}">
+
+                    <label for="new_residential_address">Residential Address:</label>
+                    <input type="text" id="new_residential_address" name="new_residential_address" value="{{ customer.residential_address }}">
+
+                    <label for="new_email">Email:</label>
+                    <input type="email" id="new_email" name="new_email" value="{{ customer.email }}">
+
+                    <label for="new_contact_number">Contact Number:</label>
+                    <input type="text" id="new_contact_number" name="new_contact_number" value="{{ customer.contact_number }}">
+
+                    <button type="submit">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('editButton').addEventListener('click', function () {
+            var editFormContainer = document.getElementById('editFormContainer');
+            editFormContainer.classList.toggle('hidden');
+        });
+    </script>
+</body>
+
+</html>
